@@ -1,5 +1,7 @@
 package com.mshr;
 
+import java.util.Map;
+
 import com.mshr.client.FrankfurterClient;
 
 /**
@@ -13,8 +15,11 @@ public class Main {
 
         FrankfurterClient client = new FrankfurterClient();
         try {
-            var result = client.getCurrencies();
-            System.out.println(result);
+            Map<String, String> currencies = client.getCurrencies();
+            System.out.println("Available currencies: \n");
+
+            currencies.forEach((code, name) -> System.out.println(code + " - " + name));
+
         } catch (Exception e) {
             System.err.println("Ошибка при запросе: " + e.getMessage());
         }
