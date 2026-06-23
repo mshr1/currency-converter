@@ -14,7 +14,7 @@ public class ConversionResult {
         amount, fromCurrency, convertedAmount, toCurrency, date);
   }
 
-  ConversionResult(double amount, String fromCurrency, String toCurrency, double convertedAmount, String date) {
+  public ConversionResult(double amount, String fromCurrency, String toCurrency, double convertedAmount, String date) {
     this.amount = amount;
     this.fromCurrency = fromCurrency;
     this.toCurrency = toCurrency;

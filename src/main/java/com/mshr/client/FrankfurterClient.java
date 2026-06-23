@@ -29,13 +29,37 @@ public class FrankfurterClient {
     // Парсим JSON в Map
     ObjectMapper mapper = new ObjectMapper();
     Map<String, String> currencies = mapper.readValue(json, new TypeReference<Map<String, String>>() {
-
     });
     return currencies;
   }
 
   public ConversionResult convert(double amount, String from, String to)
       throws IOException, InterruptedException {
+    String url = String.format("https://api.frankfurter.dev/latest?amount=%.2f&from=%s&to=%s",
+        amount, from.toUpperCase(), to.toUpperCase());
 
+    HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
+
+    // отправка запроса
+
+    HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+
+    if (response.statusCode() != 200) {
+      throw new IOException("Ошибка!");
+    }
+
+    // Распарс json
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    Map<String, Object> jsonMap = mapper.readValue(response.body(), new TypeReference<Map<String, Object>>() {
+    });
+
+    String date = (String) jsonMap.get("date");
+
+    Map<String, Double> rates = (Map<String, Double>) jsonMap.get("rates");
+
+    double convertedValue = rates.get(to.toUpperCase());
+    return new ConversionResult(amount, from.toUpperCase(), to.toUpperCase(), convertedValue, date);
   }
 }

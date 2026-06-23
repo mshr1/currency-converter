@@ -1,7 +1,7 @@
 package com.mshr;
 
 import java.util.Map;
-
+import com.mshr.model.ConversionResult;
 import com.mshr.client.FrankfurterClient;
 
 /**
